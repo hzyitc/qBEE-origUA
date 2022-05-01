@@ -1,0 +1,53 @@
+name: CI
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Install dependencies
+        run: |
+          sudo apt install equivs devscripts
+
+      - name: Build libtorrent-rasterbar
+        run: |
+          git clone https://salsa.debian.org/debian/libtorrent-rasterbar
+          cd libtorrent-rasterbar
+          sudo mk-build-deps -i
+          dpkg-buildpackage -b -rfakeroot -us -uc
+
+      - name: Install libtorrent-rasterbar
+        run: |
+          sudo dpkg -i ./libtorrent-rasterbar10_*.deb
+          sudo dpkg -i ./libtorrent-rasterbar-dev_*.deb
+
+      - name: Build qBittorrent-Enhanced-Edition
+        run: |
+          git clone https://github.com/c0re100/qBittorrent-Enhanced-Edition
+          cd qBittorrent-Enhanced-Edition
+          git checkout v4_3_x
+          cp -avr ../debian ./
+          ../generate-changelog.sh >debian/changelog
+          sudo mk-build-deps -i
+          dpkg-buildpackage -b -rfakeroot -us -uc
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: ./*.deb
+
+      - name: Release
+        run: |
+          time="${{ github.event.head_commit.timestamp }}"
+          sha="${GITHUB_SHA:0:8}"
+          tag="ci-$(date +'%Y%m%d-%H%M' -d "$time")"
+          message="Auto-Release $(date +'%Y-%m-%d %H:%M' -d "$time")"
+          hub release create $(for a in *.deb; do echo -a $a; done) -t "$GITHUB_SHA" "$tag" -m "$message"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
