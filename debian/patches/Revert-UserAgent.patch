@@ -1,26 +1,22 @@
+Revert UserAgent
+
+---
+ src/base/bittorrent/session.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
 diff --git a/src/base/bittorrent/session.cpp b/src/base/bittorrent/session.cpp
-index 06995f759..059c93fbc 100644
+index 933a67383..3ebdf1265 100644
 --- a/src/base/bittorrent/session.cpp
 +++ b/src/base/bittorrent/session.cpp
-@@ -107,7 +107,7 @@
+@@ -116,7 +116,7 @@ const QString CATEGORIES_FILE_NAME {QStringLiteral("categories.json")};
+ namespace
+ {
+     const char PEER_ID[] = "qB";
+-    const char USER_AGENT[] = "qBittorrent Enhanced/" QBT_VERSION_2;
++    const char USER_AGENT[] = "qBittorrent/" QBT_VERSION_2;
  
- static const char PEER_ID[] = "qB";
- static const char RESUME_FOLDER[] = "BT_backup";
--static const char USER_AGENT[] = "qBittorrent Enhanced/" QBT_VERSION_2;
-+static const char USER_AGENT[] = "qBittorrent/" QBT_VERSION_2;
- 
- using namespace BitTorrent;
- 
-diff --git a/src/base/version.h.in b/src/base/version.h.in
-index b9846c00d..130f7c907 100644
---- a/src/base/version.h.in
-+++ b/src/base/version.h.in
-@@ -31,7 +31,7 @@
- #define QBT_VERSION_MAJOR 4
- #define QBT_VERSION_MINOR 3
- #define QBT_VERSION_BUGFIX 9
--#define QBT_VERSION_BUILD 10
-+#define QBT_VERSION_BUILD 0
- #define QBT_VERSION_STATUS ""  // Should be empty for stable releases!
- 
- #define QBT__STRINGIFY(x) #x
+     void torrentQueuePositionUp(const lt::torrent_handle &handle)
+     {
+-- 
+2.25.1
+

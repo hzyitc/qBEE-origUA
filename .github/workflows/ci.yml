@@ -32,7 +32,7 @@ jobs:
         run: |
           git clone https://github.com/c0re100/qBittorrent-Enhanced-Edition
           cd qBittorrent-Enhanced-Edition
-          git checkout v4_3_x
+          git checkout v4_4_x
           cp -avr ../debian ./
           ../generate-changelog.sh >debian/changelog
           sudo mk-build-deps -i
