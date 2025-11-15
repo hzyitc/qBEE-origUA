@@ -16,17 +16,18 @@ jobs:
           sudo apt update
           sudo apt install equivs devscripts
 
-      - name: Build libtorrent-rasterbar
-        run: |
-          git clone https://salsa.debian.org/debian/libtorrent-rasterbar
-          cd libtorrent-rasterbar
-          sudo mk-build-deps -i
-          dpkg-buildpackage -b -rfakeroot -us -uc
+      # - name: Build libtorrent-rasterbar
+      #   run: |
+      #     git clone https://salsa.debian.org/debian/libtorrent-rasterbar
+      #     cd libtorrent-rasterbar
+      #     sudo mk-build-deps -i
+      #     dpkg-buildpackage -b -rfakeroot -us -uc
 
       - name: Install libtorrent-rasterbar
         run: |
-          sudo dpkg -i ./libtorrent-rasterbar10_*.deb
-          sudo dpkg -i ./libtorrent-rasterbar-dev_*.deb
+          # sudo dpkg -i ./libtorrent-rasterbar10_*.deb
+          # sudo dpkg -i ./libtorrent-rasterbar-dev_*.deb
+          sudo apt install libtorrent-rasterbar-dev
 
       - name: Build qBittorrent-Enhanced-Edition
         run: |
